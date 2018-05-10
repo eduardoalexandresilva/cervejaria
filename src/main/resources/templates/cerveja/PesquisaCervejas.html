@@ -2,7 +2,7 @@
 <html lang="pt" xmlns="http://www.w3.org/1999/xhtml" 
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorator="'layout/LayoutPadrao'"
+	layout:decorate="layout/LayoutPadrao"
 	xmlns:brewer="http://brewer.algaworks.com">
 	
 <head>
@@ -96,8 +96,12 @@
 				<thead>
 					<tr>
 						<th class="table-cervejas-col-foto"></th>
-						<th class="table-cervejas-col-sku">SKU</th>
-						<th class="table-cervejas-col-nome">Nome</th>
+						<th class="table-cervejas-col-sku">
+							<brewer:order page="${pagina}" field="sku" text="SKU"/>
+						</th>
+						<th class="table-cervejas-col-nome">
+							<brewer:order page="${pagina}" field="nome" text="Nome"/>
+						</th>
 						<th class="table-cervejas-col-estilo">Estilo</th>
 						<th class="table-cervejas-col-origem">Origem</th>
 						<th class="table-cervejas-col-valor">Valor</th>
@@ -106,7 +110,7 @@
 				</thead>
 				
 				<tbody>
-					<tr th:each="cerveja : ${cervejas}">
+					<tr th:each="cerveja : ${pagina.conteudo}">
 						<td class="text-center">
 							<img th:src="@{/fotos/thumbnail.{foto}(foto=${cerveja.fotoOuMock})}" class="img-responsive"/>
 						</td>
@@ -124,34 +128,14 @@
 							</a>
 						</td>
 					</tr>
-					<tr th:if="${#lists.isEmpty(cervejas)}">
+					<tr th:if="${pagina.vazia}">
 						<td colspan="7">Nenhuma cerveja encontrada</td>
 					</tr>
 				</tbody>
 			</table>
 		</div>
 		
-		<div class="col-sm-12  text-center">
-			<nav>
-				<ul class="pagination  pagination-sm">
-					<li class="disabled">
-						<a href="#"><span>&laquo;</span></a>
-					</li>
-					<li>
-						<a href="?page=0">1</a>
-					</li>
-					<li>
-						<a href="?page=1">2</a>
-					</li>
-					<li>
-						<a href="?page=2">3</a>
-					</li>
-					<li class="disabled">
-						<a href="#"><span>&raquo;</span></a>
-					</li>
-				</ul>
-			</nav>
-		</div>
+		<brewer:pagination page="${pagina}"/>
 		
 	</div>
 
